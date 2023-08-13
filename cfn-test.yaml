@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Sample CloudFormation template with YAML - CodeBuild
+
+Resources:
+  SampleCloudFormationCodeBuildBFF:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: SampleCloudFormationCodeBuildCIBFF
+      Description: use CodePipeline to update CFN
+      Source:
+        Type: GITHUB
+        Location: https://github.com/debugroom/sample-aws-cloudformation.git
+        GitCloneDepth: 1
+        BuildSpec: bff-app/src/main/codebuild/dev/buildspec.yml
+      Environment:
+        Type: LINUX_CONTAINER
+        Image: aws/codebuild/standard:2.0
+        ComputeType: BUILD_GENERAL1_SMALL
+      ServiceRole: TempTestRole
+      Artifacts:
+        Type: NO_ARTIFACTS
+  SampleCloudFormationCodeBuild2:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: SampleCloudFormationCodeBuild2
+      Description: use CodePipeline to update CFN
+      Source:
+        Type: GITHUB
+        Location: https://github.com/debugroom/sample-aws-cloudformation.git
+        GitCloneDepth: 1
+        BuildSpec: bff-app/src/main/codebuild/dev/buildspec.yml
+      Environment:
+        Type: LINUX_CONTAINER
+        Image: aws/codebuild/standard:2.0
+        ComputeType: BUILD_GENERAL1_SMALL
+      ServiceRole: TempTestRole
+      Artifacts:
+        Type: NO_ARTIFACTS
+    DependsOn: SampleCloudFormationCodeBuildBFF
